@@ -123,6 +123,9 @@ _create_thunderbird_appimage() {
 	#!/bin/sh
 	HERE="$(dirname "$(readlink -f "${0}")")"
 	export UNION_PRELOAD="${HERE}"
+	export PATH="${HERE}:${PATH}"
+	export MOZ_LEGACY_PROFILES=1
+	export MOZ_APP_LAUNCHER="${APPIMAGE}"
 	exec "${HERE}"/thunderbird "$@"
 	HEREDOC
 	chmod a+x ./"$APP".AppDir/AppRun
