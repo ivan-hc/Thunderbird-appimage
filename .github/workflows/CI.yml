@@ -1,0 +1,72 @@
+name: Thunderbird Appimages
+concurrency:
+  group: build-${{ github.ref }}
+  cancel-in-progress: true
+
+on:
+  schedule:
+    - cron: "0 20 * * 0-6"
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: build
+      run: |
+        sudo apt update && sudo apt install desktop-file-utils
+        chmod a+x ./thunderbird-builder.sh
+        ./thunderbird-builder.sh
+        mkdir dist
+        mv *AppImage* dist/
+
+    - name: Upload artifact
+      uses: actions/upload-artifact@v4.4.0
+      with:
+        name: AppImages
+        path: 'dist'
+        
+  release:
+      needs: [build]
+      permissions: write-all
+      runs-on: ubuntu-latest
+
+      steps:
+        - uses: actions/download-artifact@v4.1.8
+          with:
+            name: AppImages
+
+        - name: release stable
+          uses: marvinpinto/action-automatic-releases@latest
+          with:
+            title: Continuous Stable
+            automatic_release_tag: continuous-stable
+            prerelease: false
+            draft: false
+            files: |
+              *stable*.AppImage*
+            repo_token: ${{ secrets.GITHUB_TOKEN }}
+
+        - name: release beta
+          uses: marvinpinto/action-automatic-releases@latest
+          with:
+            title: Continuous Beta
+            automatic_release_tag: continuous-beta
+            prerelease: true
+            draft: false
+            files: |
+              *beta*.AppImage*
+            repo_token: ${{ secrets.GITHUB_TOKEN }}
+
+        - name: release nightly
+          uses: marvinpinto/action-automatic-releases@latest
+          with:
+            title: Continuous Nightly
+            automatic_release_tag: continuous-nightly
+            prerelease: true
+            draft: false
+            files: |
+              *nightly*.AppImage*
+            repo_token: ${{ secrets.GITHUB_TOKEN }}
