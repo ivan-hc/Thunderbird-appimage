@@ -1,0 +1,3 @@
+https://github.com/ivan-hc/Thunderbird-appimage/releases/download/continuous-stable/Thunderbird-stable-138.0.2-x86_64.AppImage
+https://github.com/ivan-hc/Thunderbird-appimage/releases/download/continuous-nightly/Thunderbird-nightly-140.0a1-x86_64.AppImage
+https://github.com/ivan-hc/Thunderbird-appimage/releases/download/continuous-beta/Thunderbird-beta-139.0-x86_64.AppImage
