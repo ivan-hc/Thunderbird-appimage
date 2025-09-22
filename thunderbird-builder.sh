@@ -81,10 +81,8 @@ MimeType=message/rfc822;x-scheme-handler/mailto;application/x-xpinstall;
 StartupNotify=true"
 
 POLICIES='{
-"policies": {
-    "DisableAppUpdate": true,
-    "AppAutoUpdate": false,
-    "BackgroundAppUpdate": false
+  "policies": {
+    "DisableAppUpdate": true
   }
 }'
 
