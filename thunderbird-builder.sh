@@ -94,7 +94,7 @@ _create_thunderbird_appimage() {
 		wget "$DOWNLOAD_URL" --trust-server-names || exit 1
 	fi
 	# Disable automatic updates
-	touch "$APP".AppDir/is_packaged_app
+	mkdir -p "$APP".AppDir && touch "$APP".AppDir/is_packaged_app || exit 1
 	# Extract the archive
 	[ -e ./*tar.* ] && tar fx ./*tar.* && mv ./thunderbird/* "$APP".AppDir/ && rm -f ./*tar.* || exit 1
 	# Enter the AppDir
