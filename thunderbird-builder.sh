@@ -80,12 +80,6 @@ Categories=Network;Email;
 MimeType=message/rfc822;x-scheme-handler/mailto;application/x-xpinstall;
 StartupNotify=true"
 
-POLICIES='{
-  "policies": {
-    "DisableAppUpdate": true
-  }
-}'
-
 _create_thunderbird_appimage() {
 	# Detect the channel
 	if [ "$CHANNEL" != stable ]; then
@@ -100,8 +94,7 @@ _create_thunderbird_appimage() {
 		wget "$DOWNLOAD_URL" --trust-server-names || exit 1
 	fi
 	# Disable automatic updates
-	mkdir -p "$APP".AppDir/distribution
-	echo "$POLICIES" > "$APP".AppDir/distribution/policies.json
+	touch "$APP".AppDir/is_packaged_app
 	# Extract the archive
 	[ -e ./*tar.* ] && tar fx ./*tar.* && mv ./thunderbird/* "$APP".AppDir/ && rm -f ./*tar.* || exit 1
 	# Enter the AppDir
