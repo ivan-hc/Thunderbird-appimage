@@ -87,23 +87,37 @@ _create_thunderbird_appimage() {
 	else
 		DOWNLOAD_URL="https://download.mozilla.org/?product=$APP-latest&os=linux64"
 	fi
+
 	# Download with wget or wget2
 	if wget --version | head -1 | grep -q ' 1.'; then
 		wget -q --no-verbose --show-progress --progress=bar "$DOWNLOAD_URL" --trust-server-names || exit 1
 	else
 		wget "$DOWNLOAD_URL" --trust-server-names || exit 1
 	fi
+
 	# Disable automatic updates
-	mkdir -p "$APP".AppDir && touch "$APP".AppDir/is_packaged_app || exit 1
+	#mkdir -p "$APP".AppDir && touch "$APP".AppDir/is_packaged_app || exit 1
+	mkdir -p "$APP".AppDir/distribution
+	cat <<-'HEREDOC' >> "$APP".AppDir/distribution/policies.json
+	{
+	  "policies": {
+	    "DisableAppUpdate": true
+	  }
+	}
+	HEREDOC
+
 	# Extract the archive
 	[ -e ./*tar.* ] && tar fx ./*tar.* && mv ./thunderbird/* "$APP".AppDir/ && rm -f ./*tar.* || exit 1
+
 	# Enter the AppDir
 	cd "$APP".AppDir || exit 1
+
 	# Add the launcher and patch it depending on the release channel
 	echo "$LAUNCHER" > thunderbird.desktop
 	if [ "$CHANNEL" != stable ]; then
 		sed -i "s/Name=Thunderbird/Name=Thunderbird ${CHANNEL^}/g" thunderbird.desktop
 	fi
+
 	# Add the icon
 	cp ./chrome/icons/default/default128.png thunderbird.png
 	cd .. || exit 1
