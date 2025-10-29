@@ -8,10 +8,10 @@ cd ./tmp || exit 1
 
 # DOWNLOAD APPIMAGETOOL
 if ! test -f ./appimagetool; then
-	wget -q https://github.com/pkgforge-dev/appimagetool-uruntime/releases/download/continuous/appimagetool-x86_64.AppImage -O appimagetool || exit 1
+	wget -q https://github.com/AppImage/appimagetool/releases/download/continuous/appimagetool-x86_64.AppImage -O appimagetool || exit 1
 	chmod a+x ./appimagetool
 fi
-export URUNTIME_PRELOAD=1
+#export URUNTIME_PRELOAD=1
 
 # CREATE THUNDERBIRD BROWSER APPIMAGES
 
