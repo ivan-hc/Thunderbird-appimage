@@ -96,15 +96,15 @@ _create_thunderbird_appimage() {
 	fi
 
 	# Disable automatic updates
-	#mkdir -p "$APP".AppDir && touch "$APP".AppDir/is_packaged_app || exit 1
-	mkdir -p "$APP".AppDir/distribution
-	cat <<-'HEREDOC' >> "$APP".AppDir/distribution/policies.json
-	{
-	  "policies": {
-	    "DisableAppUpdate": true
-	  }
-	}
-	HEREDOC
+	mkdir -p "$APP".AppDir && touch "$APP".AppDir/is_packaged_app || exit 1
+	#mkdir -p "$APP".AppDir/distribution
+	#cat <<-'HEREDOC' >> "$APP".AppDir/distribution/policies.json
+	#{
+	#  "policies": {
+	#    "DisableAppUpdate": true
+	#  }
+	#}
+	#HEREDOC
 
 	# Extract the archive
 	[ -e ./*tar.* ] && tar fx ./*tar.* && mv ./thunderbird/* "$APP".AppDir/ && rm -f ./*tar.* || exit 1
