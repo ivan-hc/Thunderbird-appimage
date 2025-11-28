@@ -132,7 +132,7 @@ _create_thunderbird_appimage() {
 	export PATH="${HERE}:${PATH}"
 	export MOZ_LEGACY_PROFILES=1
 	export MOZ_APP_LAUNCHER="${APPIMAGE}"
-	exec "${HERE}"/thunderbird "$@"
+	"${HERE}"/thunderbird-bin "$@"
 	HEREDOC
 	chmod a+x ./"$APP".AppDir/AppRun
 
