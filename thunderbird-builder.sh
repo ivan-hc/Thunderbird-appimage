@@ -8,7 +8,7 @@ cd ./tmp || exit 1
 
 # DOWNLOAD APPIMAGETOOL
 if ! test -f ./appimagetool; then
-	wget -q https://github.com/AppImage/appimagetool/releases/download/continuous/appimagetool-x86_64.AppImage -O appimagetool || exit 1
+	wget -q https://github.com/pkgforge-dev/appimagetool/releases/latest/download/appimagetool-x86_64-linux -O appimagetool || exit 1
 	chmod a+x ./appimagetool
 fi
 #export URUNTIME_PRELOAD=1
@@ -120,6 +120,7 @@ _create_thunderbird_appimage() {
 
 	# Add the icon
 	cp ./chrome/icons/default/default128.png thunderbird.png
+	cp thunderbird.png .DirIcon
 	cd .. || exit 1
 
 	# Check the version
@@ -137,8 +138,10 @@ _create_thunderbird_appimage() {
 	chmod a+x ./"$APP".AppDir/AppRun
 
 	# Export the AppDir to an AppImage
-	ARCH=x86_64 ./appimagetool -u "gh-releases-zsync|$GITHUB_REPOSITORY_OWNER|Thunderbird-appimage|continuous-$CHANNEL|*-$CHANNEL-*x86_64.AppImage.zsync" \
-		./"$APP".AppDir Thunderbird-"$CHANNEL"-"$VERSION"-x86_64.AppImage || exit 1
+	APPIMAGE_ARCH=x86_64 VERSION="$VERSION" ./appimagetool \
+		-u "gh-releases-zsync|$GITHUB_REPOSITORY_OWNER|Thunderbird-appimage|continuous-$CHANNEL|*-$CHANNEL-*x86_64.AppImage.zsync" \
+		-n Thunderbird-"$CHANNEL"-"$VERSION"-x86_64.AppImage \
+		./"$APP".AppDir || exit 1
 }
 
 CHANNEL="stable"
